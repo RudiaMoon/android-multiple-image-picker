@@ -37,13 +37,12 @@ public class CustomImageView extends ImageView {
     }
 
 
-
     //Squares the thumbnail
     @Override
-    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec){
-        if(mMatchHeightToWidth){
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+        if (mMatchHeightToWidth) {
             setMeasuredDimension(widthMeasureSpec, widthMeasureSpec);
-        } else if(mMatchWidthToHeight){
+        } else if (mMatchWidthToHeight) {
             setMeasuredDimension(heightMeasureSpec, heightMeasureSpec);
         } else {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);

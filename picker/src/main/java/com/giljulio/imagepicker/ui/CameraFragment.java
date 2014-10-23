@@ -38,18 +38,16 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback,
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        mSurfaceView = (SurfaceView)rootView.findViewById(R.id.surfaceView);
+        mSurfaceView = (SurfaceView) rootView.findViewById(R.id.surfaceView);
         mSurfaceHolder = mSurfaceView.getHolder();
         mSurfaceHolder.addCallback(this);
-
-
 
 
         mTakePictureBtn = (ImageButton) rootView.findViewById(R.id.take_picture);
         mTakePictureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mTakePictureBtn.isEnabled()){
+                if (mTakePictureBtn.isEnabled()) {
                     mTakePictureBtn.setEnabled(false);
                     mCamera.takePicture(CameraFragment.this, null, CameraFragment.this);
                 }
@@ -117,20 +115,20 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback,
         matrix.postRotate(90);
         picture = Bitmap.createBitmap(picture, 0, 0, picture.getWidth(), picture.getHeight(), matrix, true);
 
-        String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), picture, "" , "");
+        String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), picture, "", "");
         Uri contentUri = Uri.parse(path);
         Image image = getImageFromContentUri(contentUri);
-        ((ImagePickerActivity)getActivity()).addImage(image);
+        ((ImagePickerActivity) getActivity()).addImage(image);
     }
 
 
     public Image getImageFromContentUri(Uri contentUri) {
 
         String[] cols = {
-            MediaStore.Images.Media.DATA,
-            MediaStore.Images.ImageColumns.ORIENTATION
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.ImageColumns.ORIENTATION
         };
-         // can post image
+        // can post image
         Cursor cursor = getActivity().getContentResolver().query(contentUri, cols, null, null, null);
         cursor.moveToFirst();
         Uri uri = Uri.parse(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA)));

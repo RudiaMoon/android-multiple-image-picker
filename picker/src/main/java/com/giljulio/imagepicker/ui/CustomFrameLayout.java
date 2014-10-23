@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 
 import com.giljulio.imagepicker.R;
 
+
 /**
  * Created by Gil on 09/06/2014.
  */
@@ -37,14 +38,13 @@ public class CustomFrameLayout extends FrameLayout {
     }
 
 
-
     //Squares the thumbnail
     @Override
-    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec){
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if(mMatchHeightToWidth){
+        if (mMatchHeightToWidth) {
             setMeasuredDimension(widthMeasureSpec, widthMeasureSpec);
-        } else if(mMatchWidthToHeight){
+        } else if (mMatchWidthToHeight) {
             setMeasuredDimension(heightMeasureSpec, heightMeasureSpec);
         }
     }

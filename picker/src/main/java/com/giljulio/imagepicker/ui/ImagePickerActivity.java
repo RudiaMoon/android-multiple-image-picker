@@ -1,7 +1,8 @@
 package com.giljulio.imagepicker.ui;
 
-import android.app.Activity;
+
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -29,21 +30,18 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+
 public class ImagePickerActivity extends Activity implements ActionBar.TabListener, View.OnClickListener {
 
-    private static final String TAG = ImagePickerActivity.class.getSimpleName();
-
     public static final String TAG_IMAGE_URI = "TAG_IMAGE_URI";
-
+    private static final String TAG = ImagePickerActivity.class.getSimpleName();
+    public ImageInternalFetcher mImageFetcher;
     private Set<Image> mSelectedImages;
     private LinearLayout mSelectedImagesContainer;
     private FrameLayout mFrameLayout;
     private TextView mSelectedImageEmptyMessage;
-
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    public ImageInternalFetcher mImageFetcher;
-
     private Button mCancelButtonView, mDoneButtonView;
 
     @Override
@@ -53,14 +51,17 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
 
         setContentView(R.layout.activity_main);
 
+
         mSelectedImagesContainer = (LinearLayout) findViewById(R.id.selected_photos_container);
-        mSelectedImageEmptyMessage = (TextView)findViewById(R.id.selected_photos_empty);
+        mSelectedImageEmptyMessage = (TextView) findViewById(R.id.selected_photos_empty);
         mFrameLayout = (FrameLayout) findViewById(R.id.selected_photos_container_frame);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mCancelButtonView = (Button) findViewById(R.id.action_btn_cancel);
         mDoneButtonView = (Button) findViewById(R.id.action_btn_done);
 
+
         mSelectedImages = new HashSet<Image>();
+
         mImageFetcher = new ImageInternalFetcher(this, 500);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -76,7 +77,7 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
     /**
      * Sets up the action bar, adding view page indicator
      */
-    private void setupActionBar(){
+    private void setupActionBar() {
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowHomeEnabled(false);
@@ -96,18 +97,18 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
 
 
     public boolean addImage(Image image) {
-        if(mSelectedImages.add(image)){
+        if (mSelectedImages.add(image)) {
             View rootView = LayoutInflater.from(ImagePickerActivity.this).inflate(R.layout.list_item_selected_thumbnail, null);
-            ImageView thumbnail = (ImageView)rootView.findViewById(R.id.selected_photo);
+            ImageView thumbnail = (ImageView) rootView.findViewById(R.id.selected_photo);
             rootView.setTag(image.mUri);
             mImageFetcher.loadImage(image.mUri, thumbnail);
             mSelectedImagesContainer.addView(rootView, 0);
 
-            int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60,
+            int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60,
                     getResources().getDisplayMetrics());
             thumbnail.setLayoutParams(new FrameLayout.LayoutParams(px, px));
 
-            if(mSelectedImages.size() == 1){
+            if (mSelectedImages.size() == 1) {
                 mSelectedImagesContainer.setVisibility(View.VISIBLE);
                 mSelectedImageEmptyMessage.setVisibility(View.GONE);
             }
@@ -117,16 +118,16 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
     }
 
     public boolean removeImage(Image image) {
-        if(mSelectedImages.remove(image)){
-            for(int i = 0; i < mSelectedImagesContainer.getChildCount(); i++){
+        if (mSelectedImages.remove(image)) {
+            for (int i = 0; i < mSelectedImagesContainer.getChildCount(); i++) {
                 View childView = mSelectedImagesContainer.getChildAt(i);
-                if(childView.getTag().equals(image.mUri)){
+                if (childView.getTag().equals(image.mUri)) {
                     mSelectedImagesContainer.removeViewAt(i);
                     break;
                 }
             }
 
-            if(mSelectedImages.size() == 0){
+            if (mSelectedImages.size() == 0) {
                 mSelectedImagesContainer.setVisibility(View.GONE);
                 mSelectedImageEmptyMessage.setVisibility(View.VISIBLE);
             }
@@ -135,7 +136,7 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
         return false;
     }
 
-    public boolean containsImage(Image image){
+    public boolean containsImage(Image image) {
         return mSelectedImages.contains(image);
     }
 
@@ -177,17 +178,17 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
     @Override
     public void onClick(View view) {
         //cannot use switch statement since ADT 14 -.-
-        if(view.getId() == R.id.action_btn_done){
+        if (view.getId() == R.id.action_btn_done) {
 
             Uri[] uris = new Uri[mSelectedImages.size()];
             int i = 0;
-            for(Image img : mSelectedImages)
+            for (Image img : mSelectedImages)
                 uris[i++] = img.mUri;
 
             Intent intent = new Intent();
             intent.putExtra(TAG_IMAGE_URI, uris);
             setResult(Activity.RESULT_OK, intent);
-        } else if(view.getId() == R.id.action_btn_cancel){
+        } else if (view.getId() == R.id.action_btn_cancel) {
             setResult(Activity.RESULT_CANCELED);
         }
         finish();
@@ -204,7 +205,7 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            switch(position){
+            switch (position) {
                 case 0:
                     return new CameraFragment();
                 case 1:
