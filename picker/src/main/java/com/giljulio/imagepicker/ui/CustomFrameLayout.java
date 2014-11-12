@@ -3,6 +3,7 @@ package com.giljulio.imagepicker.ui;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.giljulio.imagepicker.R;
@@ -23,7 +24,7 @@ public class CustomFrameLayout extends FrameLayout {
 
     public CustomFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        Log.d(TAG, "CustomFrameLayout");
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.CustomView,

@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.giljulio.imagepicker.R;
 import com.giljulio.imagepicker.model.Image;
@@ -49,9 +50,9 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
         super.onCreate(savedInstanceState);
 
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_image_picker);
 
-
+//mFrameLayout,mSelectedImagesContainer
         mSelectedImagesContainer = (LinearLayout) findViewById(R.id.selected_photos_container);
         mSelectedImageEmptyMessage = (TextView) findViewById(R.id.selected_photos_empty);
         mFrameLayout = (FrameLayout) findViewById(R.id.selected_photos_container_frame);
@@ -101,8 +102,12 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
             View rootView = LayoutInflater.from(ImagePickerActivity.this).inflate(R.layout.list_item_selected_thumbnail, null);
             ImageView thumbnail = (ImageView) rootView.findViewById(R.id.selected_photo);
             rootView.setTag(image.mUri);
+            Uri s = image.mUri;
             mImageFetcher.loadImage(image.mUri, thumbnail);
-            mSelectedImagesContainer.addView(rootView, 0);
+            //기존 추가될때 마다앞에 생성.
+            //mSelectedImagesContainer.addView(rootView, 0);
+            //새로 추가될 때마다 오른쪽에 이미지 생성.
+            mSelectedImagesContainer.addView(rootView, mSelectedImages.size() - 1);
 
             int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60,
                     getResources().getDisplayMetrics());
@@ -111,6 +116,10 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
             if (mSelectedImages.size() == 1) {
                 mSelectedImagesContainer.setVisibility(View.VISIBLE);
                 mSelectedImageEmptyMessage.setVisibility(View.GONE);
+            } else if (mSelectedImages.size() > 5) {
+                removeImage(image);
+                Toast.makeText(rootView.getContext(), "5장까지 입력가능합니다.", Toast.LENGTH_SHORT).show();
+
             }
             return true;
         }
@@ -144,7 +153,7 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.image_picker, menu);
         return true;
     }
 
@@ -153,10 +162,10 @@ public class ImagePickerActivity extends Activity implements ActionBar.TabListen
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        int id = item.getItemId();
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 

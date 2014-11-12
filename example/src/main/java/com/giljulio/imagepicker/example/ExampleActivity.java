@@ -13,14 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.giljulio.imagepicker.ui.ImagePickerActivity;
+import com.giljulio.imagepicker.utils.ImageInternalFetcher;
 
 public class ExampleActivity extends Activity {
 
     private static final String TAG = ExampleActivity.class.getSimpleName();
-
     private static final int RESULT_IMAGE_PICKER = 9000;
 
 
@@ -39,7 +41,7 @@ public class ExampleActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.example, menu);
         return true;
@@ -63,7 +65,10 @@ public class ExampleActivity extends Activity {
     public static class PlaceholderFragment extends Fragment {
 
         private TextView mActivityResultsTextView;
-
+        private LinearLayout mSelectedImagesContainer;
+        private FrameLayout mFrameLayout;
+        private TextView mSelectedImageEmptyMessage;
+        public ImageInternalFetcher mImageFetcher;
 
         public PlaceholderFragment() {
         }
@@ -73,8 +78,15 @@ public class ExampleActivity extends Activity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_example, container, false);
 
+            //  View customView = LayoutInflater.from(ExampleActivity.class).inflate(com.giljulio.imagepicker.R.layout.list_item_selected_thumbnail, null);
+
+
             mActivityResultsTextView = (TextView) rootView.findViewById(R.id.result);
-            Button button = (Button)rootView.findViewById(R.id.pick_images);
+//            mSelectedImagesContainer = (LinearLayout) rootView.findViewById(R.id.selected_photos_container1);
+//
+//            mSelectedImageEmptyMessage = (TextView) rootView.findViewById(R.id.selected_photos_empty1);
+//            mFrameLayout = (FrameLayout) rootView.findViewById(R.id.selected_photos_container_frame1);
+            Button button = (Button) rootView.findViewById(R.id.pick_images);
             button.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -83,20 +95,25 @@ public class ExampleActivity extends Activity {
                     startActivityForResult(intent, RESULT_IMAGE_PICKER);
                 }
             });
+            mImageFetcher = new ImageInternalFetcher(rootView.getContext(), 500);
             return rootView;
         }
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             Log.d(TAG, "RequestCode: " + requestCode + "  ResultCode: " + resultCode);
-            switch (requestCode){
+            switch (requestCode) {
                 case RESULT_IMAGE_PICKER:
-                    if(resultCode == Activity.RESULT_OK){
+                    if (resultCode == Activity.RESULT_OK) {
                         Parcelable[] parcelableUris = data.getParcelableArrayExtra(ImagePickerActivity.TAG_IMAGE_URI);
                         Uri[] uris = new Uri[parcelableUris.length];
                         System.arraycopy(parcelableUris, 0, uris, 0, parcelableUris.length);
-                        for(Uri uri : uris)
-                            mActivityResultsTextView.setText( mActivityResultsTextView.getText() + " " + uri.getPath());
+                        for (Uri uri : uris) {
+                            mActivityResultsTextView.setText(mActivityResultsTextView.getText() + " " + uri.getPath());
+                            //  Log.d(TAG,""+ImagePickerActivity.mSelectedImages.size());
+                            //  ImagePickerActivity.containsImage(new Image(uri, 0));
+
+                        }
                     }
                     break;
 

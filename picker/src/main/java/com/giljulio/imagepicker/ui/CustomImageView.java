@@ -3,12 +3,14 @@ package com.giljulio.imagepicker.ui;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.giljulio.imagepicker.R;
 
 /**
  * Created by Gil on 05/03/2014.
+ *
  */
 public class CustomImageView extends ImageView {
 
@@ -22,7 +24,7 @@ public class CustomImageView extends ImageView {
 
     public CustomImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        Log.d(TAG, "CustomImageView");
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.CustomView,
@@ -40,6 +42,7 @@ public class CustomImageView extends ImageView {
     //Squares the thumbnail
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+        Log.d(TAG, "onMeasure");
         if (mMatchHeightToWidth) {
             setMeasuredDimension(widthMeasureSpec, widthMeasureSpec);
         } else if (mMatchWidthToHeight) {

@@ -21,10 +21,13 @@ import com.giljulio.imagepicker.R;
 import com.giljulio.imagepicker.model.Image;
 
 import java.io.IOException;
-
-
+/*
+*
+* 카메라 화면
+ */
 public class CameraFragment extends Fragment implements SurfaceHolder.Callback,
         Camera.ShutterCallback, Camera.PictureCallback {
+
 
     private static final String TAG = CameraFragment.class.getSimpleName();
 
@@ -37,6 +40,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback,
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
+        Log.d(TAG, "onCreateView");
 
         mSurfaceView = (SurfaceView) rootView.findViewById(R.id.surfaceView);
         mSurfaceHolder = mSurfaceView.getHolder();
@@ -59,7 +63,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback,
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        Log.d(TAG, "surfaceCreated");
         if (mCamera == null) {
+            //카메라 열기
             mCamera = Camera.open();
             try {
                 mCamera.setPreviewDisplay(surfaceHolder);
@@ -79,6 +85,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback,
                 e.printStackTrace();
                 mCamera.release();
                 mCamera = null;
+
             }
         }
     }
@@ -90,6 +97,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback,
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+        Log.d(TAG, "surfaceDestroyed");
         if (mCamera != null) {
             mCamera.stopPreview();
             mCamera.setPreviewCallback(null);
@@ -107,6 +115,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback,
 
     @Override
     public void onPictureTaken(byte[] bytes, Camera camera) {
+        Log.d(TAG, "onPictureTaken");
         mTakePictureBtn.setEnabled(true);
         Bitmap picture = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
@@ -123,7 +132,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback,
 
 
     public Image getImageFromContentUri(Uri contentUri) {
-
+        Log.d(TAG, "getImageFromContentUri");
         String[] cols = {
                 MediaStore.Images.Media.DATA,
                 MediaStore.Images.ImageColumns.ORIENTATION
@@ -138,6 +147,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback,
 
     @Override
     public void onShutter() {
+        Log.d(TAG, "onShutter");
 
     }
 }

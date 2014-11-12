@@ -19,8 +19,10 @@ import android.widget.ImageView;
 import com.giljulio.imagepicker.R;
 import com.giljulio.imagepicker.model.Image;
 
+
 /**
  * Created by Gil on 04/03/2014.
+ * Galley에서 보여지는 fragment
  */
 public class GalleryFragment extends Fragment {
 
@@ -29,7 +31,7 @@ public class GalleryFragment extends Fragment {
     GridView mGalleryGridView;
     ImageGalleryAdapter mGalleryAdapter;
     ImagePickerActivity mActivity;
-
+    Cursor imageCursor = null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_gallery, container, false);
@@ -40,11 +42,23 @@ public class GalleryFragment extends Fragment {
         mActivity = ((ImagePickerActivity) getActivity());
 
 
-        final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID,
-                MediaStore.Images.ImageColumns.ORIENTATION};
-        final String orderBy = MediaStore.Images.Media._ID;
-        Cursor imageCursor = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
+//        final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID,
+//                MediaStore.Images.ImageColumns.ORIENTATION};//1 original example
+//        final String[] columns = {MediaStore.Images.Media.DATA,MediaStore.Images.Media.DATE_ADDED,MediaStore.Images.Media._ID,MediaStore.Images.ImageColumns.ORIENTATION};
+        final String[] columns = {MediaStore.Images.Media.DATA,MediaStore.Images.Media.DATE_ADDED,MediaStore.Images.Media._ID,MediaStore.Images.ImageColumns.ORIENTATION};
+//        final String selection =MediaStore.Images.ImageColumns.DATE_ADDED +"> ?";
+//        String before24hour = ((new Date().getTime() - (60 * 60 * 24 * 1000)) / 1000)+"";
+//        String[] selectionArgs = {before24hour};2. second example one day
+
+    //    final String orderBy = MediaStore.Images.Media._ID;
+        final String orderBy = MediaStore.Images.Media.DATE_ADDED+" DESC";
+
+
+//        imageCursor=  getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, selection, selectionArgs, orderBy); //2
+        imageCursor=  getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
         while (imageCursor.moveToNext()) {
+
+
             Uri uri = Uri.parse(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)));
             int orientation = imageCursor.getInt(imageCursor.getColumnIndex(MediaStore.Images.ImageColumns.ORIENTATION));
             mGalleryAdapter.add(new Image(uri, orientation));

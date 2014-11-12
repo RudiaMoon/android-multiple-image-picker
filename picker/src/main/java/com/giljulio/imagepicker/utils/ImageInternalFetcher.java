@@ -11,6 +11,7 @@ public class ImageInternalFetcher extends ImageResizer {
 
     Context mContext;
 
+
     public ImageInternalFetcher(Context context, int imageWidth, int imageHeight) {
         super(context, imageWidth, imageHeight);
         init(context);
@@ -21,18 +22,17 @@ public class ImageInternalFetcher extends ImageResizer {
         init(context);
     }
 
-    private void init(Context context){
+    private void init(Context context) {
         mContext = context;
     }
 
 
-
-    protected Bitmap processBitmap(Uri uri){
+    protected Bitmap processBitmap(Uri uri) {
         return decodeSampledBitmapFromFile(uri.getPath(), mImageWidth, mImageHeight, getImageCache());
     }
 
     @Override
     protected Bitmap processBitmap(Object data) {
-        return processBitmap((Uri)data);
+        return processBitmap((Uri) data);
     }
 }
