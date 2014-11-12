@@ -13,8 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.giljulio.imagepicker.ui.ImagePickerActivity;
@@ -65,9 +63,6 @@ public class ExampleActivity extends Activity {
     public static class PlaceholderFragment extends Fragment {
 
         private TextView mActivityResultsTextView;
-        private LinearLayout mSelectedImagesContainer;
-        private FrameLayout mFrameLayout;
-        private TextView mSelectedImageEmptyMessage;
         public ImageInternalFetcher mImageFetcher;
 
         public PlaceholderFragment() {
@@ -78,14 +73,10 @@ public class ExampleActivity extends Activity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_example, container, false);
 
-            //  View customView = LayoutInflater.from(ExampleActivity.class).inflate(com.giljulio.imagepicker.R.layout.list_item_selected_thumbnail, null);
 
 
             mActivityResultsTextView = (TextView) rootView.findViewById(R.id.result);
-//            mSelectedImagesContainer = (LinearLayout) rootView.findViewById(R.id.selected_photos_container1);
 //
-//            mSelectedImageEmptyMessage = (TextView) rootView.findViewById(R.id.selected_photos_empty1);
-//            mFrameLayout = (FrameLayout) rootView.findViewById(R.id.selected_photos_container_frame1);
             Button button = (Button) rootView.findViewById(R.id.pick_images);
             button.setOnClickListener(new View.OnClickListener() {
 
